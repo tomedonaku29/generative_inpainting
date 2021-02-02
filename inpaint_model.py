@@ -276,7 +276,7 @@ class InpaintCAModel(Model):
         if FLAGS.guided:
             batch_raw, edge, masks_raw = tf.split(batch_data, 3, axis=2)
             edge = edge[:, :, :, 0:1] / 255.
-            edge = tf.cast(edge > FLAGS.edge_threshold, tf.float32)
+            # edge = tf.cast(edge > FLAGS.edge_threshold, tf.float32)
         else:
             batch_raw, masks_raw = tf.split(batch_data, 2, axis=2)
         masks = tf.cast(masks_raw[0:1, :, :, 0:1] > 127.5, tf.float32)

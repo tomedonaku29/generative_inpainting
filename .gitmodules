@@ -1,0 +1,3 @@
+[submodule "pytorch-hed"]
+	path = pytorch-hed
+	url = git@github.com:tomedonaku29/pytorch-hed.git
