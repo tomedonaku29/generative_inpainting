@@ -3,16 +3,16 @@
 num_gpus_per_job: 1  # number of gpus each job need
 num_cpus_per_job: 4  # number of gpus each job need
 num_hosts_per_job: 1
-memory_per_job: 32  # number of gpus each job need
-gpu_type: 'nvidia-tesla-p100'
+memory_per_job: 8  # number of gpus each job need
+gpu_type: 'nvidia-rtx-2080'
 
 # parameters
-name: places2_gated_conv_v100  # any name
-model_restore: ''  # logs/places2_gated_conv
-dataset: 'celebahq'  # 'tmnist', 'dtd', 'places2', 'celeba', 'imagenet', 'cityscapes'
-random_crop: False  # Set to false when dataset is 'celebahq', meaning only resize the images to img_shapes, instead of crop img_shapes from a larger raw image. This is useful when you train on images with different resolutions like places2. In these cases, please set random_crop to true.
-val: False  # true if you want to view validation results in tensorboard
-log_dir: logs/full_model_celeba_hq_256
+name: nwd_guided  # any name
+model_restore: 'logs/full_model_nwd_guided'  # logs/places2_gated_conv
+dataset: 'nwd'  # 'tmnist', 'dtd', 'places2', 'celeba', 'imagenet', 'cityscapes'
+random_crop: True  # Set to false when dataset is 'celebahq', meaning only resize the images to img_shapes, instead of crop img_shapes from a larger raw image. This is useful when you train on images with different resolutions like places2. In these cases, please set random_crop to true.
+val: True  # true if you want to view validation results in tensorboard
+log_dir: logs/full_model_nwd_guided
 
 gan: 'sngan'
 gan_loss_alpha: 1
@@ -49,14 +49,18 @@ data_flist:
     'data/imagenet/train_shuffled.flist',
     'data/imagenet/validation_static_view.flist',
   ]
+  nwd: [
+    'data_flist/train_shuffled.flist',
+    'data_flist/validation_shuffled.flist',
+  ]
 
-static_view_size: 30
-img_shapes: [256, 256, 3]
+static_view_size: 10
+img_shapes: [192, 192, 3]
 height: 128
 width: 128
 max_delta_height: 32
 max_delta_width: 32
-batch_size: 16
+batch_size: 8
 vertical_margin: 0
 horizontal_margin: 0
 
@@ -66,5 +70,5 @@ l1_loss: True
 l1_loss_alpha: 1.
 
 # to tune
-guided: False
+guided: True
 edge_threshold: 0.6

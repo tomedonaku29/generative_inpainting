@@ -1,6 +1,7 @@
 import os
 import glob
 
+import pathlib
 import tensorflow as tf
 import neuralgym as ng
 
@@ -23,6 +24,9 @@ def multigpu_graph_def(model, FLAGS, data, gpu_id=0, loss_type='g'):
     else:
         raise ValueError('loss type is not supported.')
 
+def edge_name(fname):
+    file_path = pathlib.Path(fname)
+    return str(file_path.parent) + '/edge/' + file_path.name
 
 if __name__ == "__main__":
     # training data
@@ -31,7 +35,7 @@ if __name__ == "__main__":
     with open(FLAGS.data_flist[FLAGS.dataset][0]) as f:
         fnames = f.read().splitlines()
     if FLAGS.guided:
-        fnames = [(fname, fname[:-4] + '_edge.jpg') for fname in fnames]
+        fnames = [(fname, edge_name(fname)) for fname in fnames]
         img_shapes = [img_shapes, img_shapes]
     data = ng.data.DataFromFNames(
         fnames, img_shapes, random_crop=FLAGS.random_crop,
@@ -46,7 +50,7 @@ if __name__ == "__main__":
             val_fnames = f.read().splitlines()
         if FLAGS.guided:
             val_fnames = [
-                (fname, fname[:-4] + '_edge.jpg') for fname in val_fnames]
+                (fname, edge_name(fname)) for fname in val_fnames]
         # progress monitor by visualizing static images
         for i in range(FLAGS.static_view_size):
             static_fnames = val_fnames[i:i+1]

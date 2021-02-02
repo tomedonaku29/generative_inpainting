@@ -1,3 +1,9 @@
 model_logs
 logs
 data
+input
+output
+training_data
+bin
+data_flist
+**/__pycache__
